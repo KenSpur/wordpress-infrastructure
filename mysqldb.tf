@@ -26,9 +26,11 @@ resource "azurerm_network_interface" "mysqldb" {
 }
 
 # image
-data "azurerm_image" "mysqldb" {
-  name                = var.mysqldb_image_name
-  resource_group_name = data.azurerm_resource_group.image.name
+data "azurerm_shared_image_version" "mysqldb" {
+  name                = var.mysqldb_image_version
+  image_name          = var.mysqldb_image_name
+  gallery_name        = var.image_gallery_name
+  resource_group_name = var.image_resource_group_name
 }
 
 # virtual machine
@@ -46,7 +48,7 @@ resource "azurerm_linux_virtual_machine" "mysqldb" {
 
   disable_password_authentication = false
 
-  source_image_id = data.azurerm_image.mysqldb.id
+  source_image_id = data.azurerm_shared_image_version.mysqldb.id
 
   os_disk {
     caching              = "ReadWrite"

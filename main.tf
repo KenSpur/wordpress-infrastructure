@@ -20,7 +20,3 @@ resource "azurerm_resource_group" "main" {
     "managed_by" = "terraform"
   }
 }
-
-data "azurerm_resource_group" "image" {
-  name = var.image_resource_group_name
-}
