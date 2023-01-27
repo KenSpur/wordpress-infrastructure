@@ -2,6 +2,7 @@ locals {
   mysqldb_vm_name = "vm-${var.infix}-mysqldb-${var.env}"
 }
 
+# public IP address
 resource "azurerm_public_ip" "mysqldb" {
   name                = "pip-${var.infix}-mysqldb-${var.env}"
   resource_group_name = azurerm_resource_group.main.name
@@ -9,6 +10,7 @@ resource "azurerm_public_ip" "mysqldb" {
   allocation_method   = "Static"
 }
 
+# network interface
 resource "azurerm_network_interface" "mysqldb" {
   name                = "nic-${var.infix}-mysqldb-${var.env}"
   location            = azurerm_resource_group.main.location
@@ -23,11 +25,13 @@ resource "azurerm_network_interface" "mysqldb" {
   }
 }
 
+# image
 data "azurerm_image" "mysqldb" {
   name                = var.mysqldb_image_name
   resource_group_name = data.azurerm_resource_group.image.name
 }
 
+# virtual machine
 resource "azurerm_linux_virtual_machine" "mysqldb" {
   name                = local.mysqldb_vm_name
   location            = azurerm_resource_group.main.location

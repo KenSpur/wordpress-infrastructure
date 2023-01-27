@@ -1,3 +1,4 @@
+# naming parts
 variable "infix" {
   type    = string
   default = "test"
@@ -8,6 +9,7 @@ variable "env" {
   default = "dev"
 }
 
+# images
 variable "image_resource_group_name" {
   type    = string
   default = ""
@@ -23,6 +25,7 @@ variable "wordpress_image_name" {
   default = "img-wordpress"
 }
 
+# ssh username and password
 variable "ssh_username" {
   type    = string
   default = "azureadmin"
