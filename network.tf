@@ -50,6 +50,8 @@ resource "azurerm_subnet" "frontend" {
   virtual_network_name = azurerm_virtual_network.main.name
 
   address_prefixes = ["10.0.0.0/24"]
+
+  service_endpoints = ["Microsoft.Storage"]
 }
 
 resource "azurerm_subnet" "backend" {
@@ -69,4 +71,17 @@ resource "azurerm_subnet_network_security_group_association" "frontend" {
 resource "azurerm_subnet_network_security_group_association" "backend" {
   subnet_id                 = azurerm_subnet.backend.id
   network_security_group_id = azurerm_network_security_group.backend.id
+}
+
+# private dns zone
+resource "azurerm_private_dns_zone" "main" {
+  name                = var.private_domain_name
+  resource_group_name = azurerm_resource_group.main.name
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "main" {
+  name                  = "private-dns-link"
+  resource_group_name   = azurerm_resource_group.main.name
+  private_dns_zone_name = azurerm_private_dns_zone.main.name
+  virtual_network_id    = azurerm_virtual_network.main.id
 }

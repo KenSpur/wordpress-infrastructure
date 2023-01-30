@@ -40,6 +40,12 @@ variable "wordpress_image_version" {
   default = "1.0.0"
 }
 
+# network
+variable "private_domain_name" {
+  type    = string
+  default = ""
+}
+
 # ssh username and password
 variable "ssh_username" {
   type    = string

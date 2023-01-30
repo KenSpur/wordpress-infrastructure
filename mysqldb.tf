@@ -55,3 +55,12 @@ resource "azurerm_linux_virtual_machine" "mysqldb" {
     storage_account_type = "Premium_LRS"
   }
 }
+
+# a record
+resource "azurerm_private_dns_a_record" "mysqldb" {
+  name                = "mysqldb"
+  zone_name           = azurerm_private_dns_zone.main.name
+  resource_group_name = azurerm_resource_group.main.name
+  ttl                 = 360
+  records             = [azurerm_linux_virtual_machine.mysqldb.private_ip_address]
+}
