@@ -55,3 +55,36 @@ resource "azurerm_linux_virtual_machine" "wordpress" {
     storage_account_type = "Premium_LRS"
   }
 }
+
+# availability test
+data "azurerm_public_ip" "wordpress" {
+  name                = azurerm_public_ip.wordpress.name
+  resource_group_name = azurerm_public_ip.wordpress.resource_group_name
+}
+
+resource "azurerm_application_insights_standard_web_test" "availability" {
+  name                    = "validate-availability"
+  resource_group_name     = azurerm_resource_group.main.name
+  location                = azurerm_resource_group.main.location
+  application_insights_id = azurerm_application_insights.main.id
+
+  geo_locations = ["emea-nl-ams-azr"]
+  frequency     = 300
+  enabled = true
+
+  request {
+    url       = "http://${data.azurerm_public_ip.wordpress.ip_address}"
+    http_verb = "GET"
+  }
+
+  validation_rules {
+    expected_status_code = 200
+    ssl_check_enabled = false
+
+    content {
+      content_match      = "WordPress"
+      ignore_case        = true
+      pass_if_text_found = true
+    }
+  }
+}
