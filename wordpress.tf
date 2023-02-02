@@ -70,7 +70,7 @@ resource "azurerm_application_insights_standard_web_test" "availability" {
 
   geo_locations = ["emea-nl-ams-azr"]
   frequency     = 300
-  enabled = true
+  enabled       = true
 
   request {
     url       = "http://${data.azurerm_public_ip.wordpress.ip_address}"
@@ -79,7 +79,7 @@ resource "azurerm_application_insights_standard_web_test" "availability" {
 
   validation_rules {
     expected_status_code = 200
-    ssl_check_enabled = false
+    ssl_check_enabled    = false
 
     content {
       content_match      = "WordPress"
