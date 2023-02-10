@@ -69,7 +69,7 @@ resource "azurerm_application_insights_standard_web_test" "availability" {
   application_insights_id = azurerm_application_insights.main.id
 
   geo_locations = ["emea-nl-ams-azr"]
-  frequency     = 300
+  frequency     = 900
   enabled       = true
 
   request {
